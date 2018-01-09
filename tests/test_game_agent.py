@@ -25,7 +25,7 @@ class IsolationTest(unittest.TestCase):
     def test_example(self):
         print("starting game")
 
-        winner, history, outcome =self.game.play()
+        winner, history, outcome =self.game.play(2000)
         print("\nWinner: {}\nOutcome: {}".format(winner, outcome))
         print(self.game.to_string())
         print("Move history:\n{!s}".format(history))
