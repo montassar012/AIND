@@ -3,7 +3,7 @@ test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
 import random
-
+import math
 
 class SearchTimeout(Exception):
     """Subclass base exception for code clarity. """
@@ -34,16 +34,72 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    if(game.is_loser(player)):
+    # if(game.is_loser(player)):
+    #     return float("-inf")
+    # if(game.is_winner(player)):
+    #     return float("inf")
+    #
+    # nl=len(game.get_legal_moves(player))
+    # # if(nl>1):
+    # #     return float(-nl)
+    #
+    # return float(nl)
+    """Calculate the heuristic value of a game state from the point of view
+    of the given player.
+    Note: this function should be called from within a Player instance as
+    `self.score()` -- you should not need to call this function directly.
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+    Returns
+    -------
+    float
+        The heuristic value of the current game state to the specified player.
+    """
+    # if game.is_loser(player):
+    #     return float("-inf")
+    # if game.is_winner(player):
+    #     return float("inf")
+    # p1_lr, p1_lc = game.get_player_location(game.get_opponent(player))
+    # p2_lr, p2_lc = game.get_player_location(game.get_opponent(player))
+    #
+    # own_moves = game.get_legal_moves(player)
+    # opp_moves = game.get_legal_moves(game.get_opponent(player))
+    # own_dif_moves = set(own_moves).difference(set(opp_moves))
+    # opp_dif_moves = set(opp_moves).difference(set(own_moves))
+    # # H4 Heuristic Function weighted sum of 2 move selection strategies:
+    # # Maximize difference in available moves(own vs opponent unique moves)
+    # # Maximize board distance between the forecasted move and the opps last move
+    #
+    #
+    # return float(len(own_moves) - 3 * len(opp_dif_moves) + 0.5 * (abs(p1_lr - p2_lr) + abs(p1_lc - p2_lc)))
+
+
+
+    if game.is_loser(player):
         return float("-inf")
-    if(game.is_winner(player)):
+    if game.is_winner(player):
         return float("inf")
 
-    nl=len(game.get_legal_moves(player))
-    # if(nl>1):
-    #     return float(-nl)
 
-    return float(nl)
+    opp_location = game.get_player_location(game.get_opponent(player))
+    if opp_location == None:
+        return 0.
+
+    own_location = game.get_player_location(player)
+    if own_location == None:
+        return 0.
+    board_size=game.height * game.width
+    x= (opp_location[0]-own_location[0])**2
+    y=  (opp_location[1]-own_location[1])**2
+    if len(game.get_blank_spaces())>(board_size/4):
+        return -math.sqrt(x + y)
+    return math.sqrt(x + y)
 
 
 def custom_score_2(game, player):
@@ -68,8 +124,39 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    # if game.is_loser(player):
+    #     return float("-inf")
+    # if game.is_winner(player):
+    #     return float("inf")
+    #
+    # board_size=game.height * game.width
+    # legal_moves = float(len(game.get_legal_moves(player)))
+    # if len(game.get_blank_spaces())>(board_size/4):
+    #
+    #     if(legal_moves>1):
+    #         return -legal_moves
+    #     else:
+    #         return legal_moves
+    # return legal_moves
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    opp_location = game.get_player_location(game.get_opponent(player))
+    if opp_location == None:
+        return 0.
+
+    own_location = game.get_player_location(player)
+    if own_location == None:
+        return 0.
+
+    x= (opp_location[0]-own_location[0])**2
+    y=  (opp_location[1]-own_location[1])**2
+    return - math.sqrt(x+y)
+
+
 
 
 def custom_score_3(game, player):
@@ -94,8 +181,23 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    opp_location = game.get_player_location(game.get_opponent(player))
+    if opp_location == None:
+        return 0.
+
+    own_location = game.get_player_location(player)
+    if own_location == None:
+        return 0.
+
+    x= (opp_location[0]-own_location[0])**2
+    y=  (opp_location[1]-own_location[1])**2
+    return math.sqrt(x+y)
 
 
 class IsolationPlayer:
@@ -162,7 +264,6 @@ class MinimaxPlayer(IsolationPlayer):
             (-1, -1) if there are no available legal moves.
         """
         self.time_left = time_left
-
         # Initialize the best move so that this function returns something
         # in case the search fails due to timeout
         best_move = (-1, -1)
@@ -173,7 +274,6 @@ class MinimaxPlayer(IsolationPlayer):
             return self.minimax(game, self.search_depth)
 
         except SearchTimeout:
-            print ("minimax timeout")
             pass  # Handle any actions required after timeout as needed
 
         # Return the best move from the last completed search iteration
@@ -263,6 +363,7 @@ class AlphaBetaPlayer(IsolationPlayer):
     make sure it returns a good move before the search time limit expires.
     """
 
+
     def get_move(self, game, time_left):
         """Search for the best move from the available legal moves and return a
         result before the time limit expires.
@@ -293,7 +394,9 @@ class AlphaBetaPlayer(IsolationPlayer):
             Board coordinates corresponding to a legal move; may return
             (-1, -1) if there are no available legal moves.
         """
+
         self.time_left = time_left
+
 
         best_move = (-1, -1)
         depth = self.search_depth
@@ -306,7 +409,6 @@ class AlphaBetaPlayer(IsolationPlayer):
                 best_move=self.alphabeta(game, depth)
 
             except SearchTimeout:
-                print("minimax timeout")
                 break
 
         # Return the best move from the last completed search iteration

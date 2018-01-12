@@ -21,11 +21,11 @@ class IsolationTest(unittest.TestCase):
         self.player2 = sample_players.GreedyPlayer(sample_players.improved_score)
         self.player3 = game_agent.AlphaBetaPlayer()
        # self.game = isolation.Board(self.player1, self.player2,7,7)
-        self.game = isolation.Board(self.player2, self.player3,7,7)
+        self.game = isolation.Board(self.player3, self.player2,7,7)
     def test_example(self):
         print("starting game")
 
-        winner, history, outcome =self.game.play(2000)
+        winner, history, outcome =self.game.play(600)
         print("\nWinner: {}\nOutcome: {}".format(winner, outcome))
         print(self.game.to_string())
         print("Move history:\n{!s}".format(history))
