@@ -97,9 +97,8 @@ def custom_score(game, player):
     board_size=game.height * game.width
     x= (opp_location[0]-own_location[0])**2
     y=  (opp_location[1]-own_location[1])**2
-    if len(game.get_blank_spaces())>(board_size/4):
-        return -math.sqrt(x + y)
-    return math.sqrt(x + y)
+
+    return -10*math.sqrt(x + y)+(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
 
 
 def custom_score_2(game, player):
@@ -154,7 +153,7 @@ def custom_score_2(game, player):
 
     x= (opp_location[0]-own_location[0])**2
     y=  (opp_location[1]-own_location[1])**2
-    return - math.sqrt(x+y)
+    return  10*math.sqrt(x+y)+(len(game.get_legal_moves(player))-len(game.get_legal_moves(game.get_opponent(player))))
 
 
 
@@ -197,7 +196,7 @@ def custom_score_3(game, player):
 
     x= (opp_location[0]-own_location[0])**2
     y=  (opp_location[1]-own_location[1])**2
-    return math.sqrt(x+y)
+    return -10*math.sqrt(x+y)-len(game.get_legal_moves(game.get_opponent(player)))
 
 
 class IsolationPlayer:
