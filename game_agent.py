@@ -34,53 +34,7 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # if(game.is_loser(player)):
-    #     return float("-inf")
-    # if(game.is_winner(player)):
-    #     return float("inf")
-    #
-    # nl=len(game.get_legal_moves(player))
-    # # if(nl>1):
-    # #     return float(-nl)
-    #
-    # return float(nl)
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
-    Note: this function should be called from within a Player instance as
-    `self.score()` -- you should not need to call this function directly.
-    Parameters
-    ----------
-    game : `isolation.Board`
-        An instance of `isolation.Board` encoding the current state of the
-        game (e.g., player locations and blocked cells).
-    player : object
-        A player instance in the current game (i.e., an object corresponding to
-        one of the player objects `game.__player_1__` or `game.__player_2__`.)
-    Returns
-    -------
-    float
-        The heuristic value of the current game state to the specified player.
-    """
-    # if game.is_loser(player):
-    #     return float("-inf")
-    # if game.is_winner(player):
-    #     return float("inf")
-    # p1_lr, p1_lc = game.get_player_location(game.get_opponent(player))
-    # p2_lr, p2_lc = game.get_player_location(game.get_opponent(player))
-    #
-    # own_moves = game.get_legal_moves(player)
-    # opp_moves = game.get_legal_moves(game.get_opponent(player))
-    # own_dif_moves = set(own_moves).difference(set(opp_moves))
-    # opp_dif_moves = set(opp_moves).difference(set(own_moves))
-    # # H4 Heuristic Function weighted sum of 2 move selection strategies:
-    # # Maximize difference in available moves(own vs opponent unique moves)
-    # # Maximize board distance between the forecasted move and the opps last move
-    #
-    #
-    # return float(len(own_moves) - 3 * len(opp_dif_moves) + 0.5 * (abs(p1_lr - p2_lr) + abs(p1_lc - p2_lc)))
-
-
-
+ 
     if game.is_loser(player):
         return float("-inf")
     if game.is_winner(player):
@@ -123,20 +77,7 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # if game.is_loser(player):
-    #     return float("-inf")
-    # if game.is_winner(player):
-    #     return float("inf")
-    #
-    # board_size=game.height * game.width
-    # legal_moves = float(len(game.get_legal_moves(player)))
-    # if len(game.get_blank_spaces())>(board_size/4):
-    #
-    #     if(legal_moves>1):
-    #         return -legal_moves
-    #     else:
-    #         return legal_moves
-    # return legal_moves
+
     if game.is_loser(player):
         return float("-inf")
 
